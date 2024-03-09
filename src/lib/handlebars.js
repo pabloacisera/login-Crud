@@ -9,6 +9,9 @@ const hbs = exphbs.create({
     extname: '.hbs'
 });
 
+
+
+// Exportar tanto el motor de plantillas como los helpers
 module.exports = hbs;
 
 
