@@ -16,11 +16,20 @@
             <p class="card bg-white text-dark m-2">
               {{description}}
             </p>
-            <a href="/delete" class="btn btn-danger">Delete</a>
-            <a href="/edit" class="btn btn-info">edit</a>
+            <a href="/links/delete/{{id}}" class="btn btn-danger">Delete</a>
+            <a href="/links/edit/{{id}}" class="btn btn-info">edit</a>
           </div>
         </div>
       </div>
+      {{else}}
+        <div class=" col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p class="text-white">Not elements founded...</p>
+            <a href="/links/add">
+              <button class="btn btn-primary">Create Note</button>
+            </a>
+          </div>
+        </div>
     {{/each}}
   </div>
 </div>

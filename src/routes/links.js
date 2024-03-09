@@ -34,5 +34,39 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/delete/:id', async(req, res)=>{
+    const { id } = req.params;
+    pool.query('DELETE FROM links WHERE ID = ?', [id]);
+    res.redirect('/links')
+})
 
+router.get('/edit/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await pool.query('SELECT * FROM links WHERE ID = ?', [id]);
+
+        // Check if any rows were returned from the database
+        if (result.length > 0) {
+            res.render('links/edit', { links: result[0] });
+        } else {
+            res.status(404).send('Link not found');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+router.post('/edit/:id', async(req, res)=>{
+    const { id } = req.params;
+    const { title, url, description } = req.body;
+    const linkEdited={
+        title,
+        url,
+        description
+    }
+    await pool.query('UPDATE links set ? WHERE id = ?', [linkEdited, id])
+    res.redirect('/links')
+})
 module.exports=router;
