@@ -33,3 +33,10 @@ ALTER TABLE links
     MODIFY id INT(11) NOT NULL AUTO_INCREMENT;
 
 DESCRIBE links;
+
+
+--consultar si un dato fue ingresado correctamente
+/*SHOW DATABASES; mostrar las bases de datos (para este ejercico forlinks*/
+/*USE forlinks;*/
+/*SHOW TABLES;*/
+/*SELECT * FROM ...*/
