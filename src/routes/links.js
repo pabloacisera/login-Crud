@@ -16,6 +16,7 @@ router.post('/add', async (req, res) => {
 
     try {
         await pool.query('INSERT INTO links SET ?', [newLink]);
+        req.flash('success', 'Link successfully saved')
         res.redirect('/links');
     } catch (error) {
         console.error('Error adding link to the database:', error);
@@ -34,11 +35,17 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/delete/:id', async(req, res)=>{
-    const { id } = req.params;
-    pool.query('DELETE FROM links WHERE ID = ?', [id]);
-    res.redirect('/links')
-})
+router.get('/delete/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM links WHERE ID = ?', [id]);
+        req.flash('success', 'Link successfully deleted');
+        res.redirect('/links');
+    } catch (error) {
+        console.error('Error deleting link from the database:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 router.get('/edit/:id', async (req, res) => {
     try {
@@ -58,15 +65,22 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 
-router.post('/edit/:id', async(req, res)=>{
-    const { id } = req.params;
-    const { title, url, description } = req.body;
-    const linkEdited={
-        title,
-        url,
-        description
+router.post('/edit/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, url, description } = req.body;
+        const linkEdited = {
+            title,
+            url,
+            description
+        };
+        await pool.query('UPDATE links set ? WHERE id = ?', [linkEdited, id]);
+        req.flash('success', 'Link successfully updated');
+        res.redirect('/links');
+    } catch (error) {
+        console.error('Error updating link in the database:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-    await pool.query('UPDATE links set ? WHERE id = ?', [linkEdited, id])
-    res.redirect('/links')
-})
+});
+
 module.exports=router;

@@ -1,9 +1,10 @@
 const morgan = require('morgan');
 const path = require('path');
 const express = require('express');
-const exphbs = require('./lib/handlebars.js'); // Asegúrate de que ahora estás importando express-handlebars
+const exphbs = require('./lib/handlebars.js');
 
 const app = express();
+
 
 // Configuración del motor de plantillas
 app.set('views', path.join(__dirname, 'views'));
@@ -12,15 +13,21 @@ app.engine('.hbs', exphbs.engine);
 app.set('view engine', '.hbs');
 
 /**middlewares*/
+
+
+
+
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json()); // Agregué la llamada de función '()' que faltaba
+app.use(express.json());
+ // Agregué la llamada de función '()' que faltaba
 
 /**global variables */
 app.use((req, res, next) => {
-    // Tu lógica para variables globales
+    
     next();
 });
+
 
 /**routes */
 app.use(require('./routes/index.js'));
